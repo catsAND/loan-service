@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ClientRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: 'clients')]
@@ -19,22 +18,15 @@ class Client
     private ?string $id = null;
 
     #[ORM\Column(name: 'first_name', length: 32)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 32)]
     private string $firstName;
 
     #[ORM\Column(name: 'last_name', length: 32)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 32)]
     private string $lastName;
 
     #[ORM\Column(type: Types::TEXT, unique: true)]
-    #[Assert\NotBlank]
-    #[Assert\Email]
     private string $email;
 
     #[ORM\Column(length: 16, unique: true)]
-    #[Assert\NotBlank]
     private string $phone;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
@@ -42,6 +34,9 @@ class Client
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $updatedAt;
+
+    #[ORM\Column(name: 'deleted_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
@@ -119,5 +114,17 @@ class Client
     public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    public function getDeletedAt(): ?\DateTimeImmutable
+    {
+        return $this->deletedAt;
+    }
+
+    public function setDeletedAt(?\DateTimeImmutable $deletedAt): self
+    {
+        $this->deletedAt = $deletedAt;
+
+        return $this;
     }
 }

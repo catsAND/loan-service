@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS "clients" (
 	"phone" VARCHAR(16) NOT NULL,
 	"created_at" TIMESTAMP NOT NULL DEFAULT now(),
 	"updated_at" TIMESTAMP NOT NULL DEFAULT now(),
+	"deleted_at" TIMESTAMP NULL DEFAULT NULL,
 	PRIMARY KEY ("id")
 );
 
@@ -19,6 +20,7 @@ CREATE TABLE IF NOT EXISTS "applications" (
 	"currency" CHAR(3) NOT NULL,
 	"created_at" TIMESTAMP NOT NULL DEFAULT now(),
 	"updated_at" TIMESTAMP NOT NULL DEFAULT now(),
+	"deleted_at" TIMESTAMP NULL DEFAULT NULL,
 	PRIMARY KEY ("id"),
 	CONSTRAINT "FK__clients" FOREIGN KEY ("client_id") REFERENCES "clients" ("id")  ON DELETE RESTRICT
 );
