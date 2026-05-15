@@ -1,0 +1,25 @@
+<?php declare(strict_types=1);
+
+namespace App\Dto;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\PhoneNumber;
+
+final readonly class CreateClientDto
+{
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Length(min: 2, max: 32)]
+        public string $firstName,
+        #[Assert\NotBlank]
+        #[Assert\Length(min: 2, max: 32)]
+        public string $lastName,
+        #[Assert\NotBlank]
+        #[Assert\Email]
+        public string $email,
+        #[Assert\NotBlank]
+        #[PhoneNumber]
+        public string $phoneNumber,
+    ) {
+    }
+}
