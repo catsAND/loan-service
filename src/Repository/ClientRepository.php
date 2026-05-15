@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Dto\CreateClientDto;
+use App\Dto\ClientDto;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -51,14 +51,14 @@ class ClientRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function createClient(CreateClientDto $createClientDto): Client
+    public function createClient(ClientDto $clientDto): Client
     {
         $client = new Client();
         $client
-            ->setFirstName($createClientDto->firstName)
-            ->setLastName($createClientDto->lastName)
-            ->setEmail($createClientDto->email)
-            ->setPhone($createClientDto->phoneNumber);
+            ->setFirstName($clientDto->firstName)
+            ->setLastName($clientDto->lastName)
+            ->setEmail($clientDto->email)
+            ->setPhone($clientDto->phoneNumber);
 
         $this->save($client);
 

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Dto\CreateClientDto;
+use App\Dto\ClientDto;
 use App\Entity\Client;
 use App\Event\ClientCreatedEvent;
 use App\Exception\ClientExsistException;
@@ -29,22 +29,22 @@ final readonly class ClientService
         return $client;
     }
 
-    public function createClient(CreateClientDto $createClientDto): Client
+    public function createClient(ClientDto $clientDto): Client
     {
-        $checkClient = $this->clientRepository->findActiveClientByEmailOrPhone($createClientDto->email, $createClientDto->phoneNumber);
+        $checkClient = $this->clientRepository->findActiveClientByEmailOrPhone($clientDto->email, $clientDto->phoneNumber);
 
         if ($checkClient) {
             throw new ClientExsistException;
         }
 
-        $client = $this->clientRepository->createClient($createClientDto);
+        $client = $this->clientRepository->createClient($clientDto);
 
         $this->dispatcher->dispatch(new ClientCreatedEvent($client));
 
         return $client;
     }
 
-    public function updateClientById(string $id, CreateClientDto $createClientDto): Client
+    public function updateClientById(string $id, ClientDto $clientDto): Client
     {
         $client = $this->clientRepository->findActiveClientById($id);
 
@@ -53,10 +53,10 @@ final readonly class ClientService
         }
 
         $client
-            ->setFirstName($createClientDto->firstName)
-            ->setLastName($createClientDto->lastName)
-            ->setEmail($createClientDto->email)
-            ->setPhone($createClientDto->phoneNumber);
+            ->setFirstName($clientDto->firstName)
+            ->setLastName($clientDto->lastName)
+            ->setEmail($clientDto->email)
+            ->setPhone($clientDto->phoneNumber);
 
         $this->clientRepository->save($client);
 

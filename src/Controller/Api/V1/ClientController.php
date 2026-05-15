@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
-use App\Dto\CreateClientDto;
+use App\Dto\ClientDto;
 use App\Repository\ClientRepository;
 use App\Service\ClientService;
 use App\Transformer\ClientTransformer;
@@ -43,17 +43,17 @@ class ClientController extends AbstractController
     }
 
     #[Route('', name: 'api_client_create', methods: ['POST'])]
-    public function create(#[MapRequestPayload] CreateClientDto $createClientDto): JsonResponse
+    public function create(#[MapRequestPayload] ClientDto $clientDto): JsonResponse
     {
-        $client = $this->clientService->createClient($createClientDto);
+        $client = $this->clientService->createClient($clientDto);
 
         return new JsonResponse($this->clientTransformer->transform($client), 201);
     }
 
     #[Route('/{client_id}', name: 'api_client_update', methods: ['PUT'])]
-    public function update(string $client_id, #[MapRequestPayload] CreateClientDto $createClientDto): JsonResponse
+    public function update(string $client_id, #[MapRequestPayload] ClientDto $clientDto): JsonResponse
     {
-        $client = $this->clientService->updateClientById($client_id, $createClientDto);
+        $client = $this->clientService->updateClientById($client_id, $clientDto);
 
         return new JsonResponse($this->clientTransformer->transform($client));
     }

@@ -5,7 +5,7 @@ namespace App\Dto;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\PhoneNumber;
 
-final readonly class CreateClientDto
+final readonly class ClientDto
 {
     public function __construct(
         #[Assert\NotBlank]
