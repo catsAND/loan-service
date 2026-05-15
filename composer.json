@@ -15,7 +15,8 @@
         "symfony/framework-bundle": "8.0.*",
         "symfony/runtime": "8.0.*",
         "symfony/uid": "8.0.*",
-        "symfony/yaml": "8.0.*"
+        "symfony/yaml": "8.0.*",
+        "symfony/validator": "8.0.*"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.6.0",
