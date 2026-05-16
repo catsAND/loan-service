@@ -2,17 +2,19 @@
 
 namespace App\Exception;
 
-use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
-readonly class ApiErrorException extends \Throwable
+class ApiErrorException extends \RuntimeException
 {
     public function __construct(
-        private string $type = '',
-        private string $title = '',
-        private int $status = 0,
-        private string $detail = '',
-        private array $extensions = [],
+        private readonly string $type = '',
+        private readonly string $title = '',
+        private readonly int $status = 0,
+        private readonly string $detail = '',
+        private readonly array $extensions = [],
+        ?Throwable $previous = null,
     ) {
+        parent::__construct($detail, $status, $previous);
     }
 
     public function getType(): string

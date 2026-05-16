@@ -4,7 +4,7 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final readonly class EmailExistException extends ApiErrorException
+final class EmailExistException extends ApiErrorException
 {
     public function __construct()
     {

@@ -4,9 +4,9 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final readonly class ClientNotFoundException extends ApiErrorException
+final class ClientNotFoundException extends ApiErrorException
 {
-    public function __construct(string $id)
+    public function __construct(readonly string $id)
     {
         parent::__construct(
             type: 'https://api.example.com/errors/client-not-found', // FIXME:

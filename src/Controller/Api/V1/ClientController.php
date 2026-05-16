@@ -29,9 +29,8 @@ class ClientController extends AbstractController
         $limit = max(1, (int)$request->query->get('limit', 100));
 
         $data = $this->clientRepository->findAllActiveClients($page, $limit);
-        $response = $this->clientTransformer->transformCollection($data);
 
-        return new JsonResponse($response);
+        return new JsonResponse($this->clientTransformer->transformCollection($data));
     }
 
     #[Route('/{clientId}', name: 'api_client_get', methods: ['GET'])]

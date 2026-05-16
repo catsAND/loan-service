@@ -15,7 +15,7 @@ framework:
                     multiplier: 2
 
         routing:
-            App\Message\ClientCreatedMessage: async
+            App\Message\ApplicationCreatedMessage: async
 
 # when@test:
 #    framework:

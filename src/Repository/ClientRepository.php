@@ -18,6 +18,7 @@ class ClientRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->where('c.deletedAt IS NULL')
+            ->orderBy('c.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
             ->getQuery()

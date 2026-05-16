@@ -4,7 +4,7 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final readonly class ClientExsistException extends ApiErrorException
+final class ClientExsistException extends ApiErrorException
 {
     public function __construct()
     {

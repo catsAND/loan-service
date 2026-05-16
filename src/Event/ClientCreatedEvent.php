@@ -6,7 +6,7 @@ use App\Entity\Client;
 
 final readonly class ClientCreatedEvent
 {
-    public function __construct(private readonly Client $client)
+    public function __construct(private Client $client)
     {
     }
 
