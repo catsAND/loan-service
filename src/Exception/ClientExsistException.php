@@ -4,20 +4,15 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final class ClientExsistException extends ApiErrorException
+final readonly class ClientExsistException extends ApiErrorException
 {
-    public function getTitle(): string
+    public function __construct()
     {
-        return 'Client Already Exists';
-    }
-
-    public function getStatus(): int
-    {
-        return Response::HTTP_BAD_REQUEST;
-    }
-
-    public function getDetail(): string
-    {
-        return 'Client with the same email or phone number already exists.';
+        parent::__construct(
+            type: 'https://api.example.com/errors/client-exist', // FIXME:
+            title: 'Client Already Exists',
+            status: Response::HTTP_CONFLICT,
+            detail: 'Client with the same email or phone number already exists.',
+        );
     }
 }

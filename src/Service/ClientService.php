@@ -7,6 +7,8 @@ use App\Entity\Client;
 use App\Event\ClientCreatedEvent;
 use App\Exception\ClientExsistException;
 use App\Exception\ClientNotFoundException;
+use App\Exception\EmailExistException;
+use App\Exception\PhoneExistException;
 use App\Repository\ClientRepository;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -23,7 +25,7 @@ final readonly class ClientService
         $client = $this->clientRepository->findActiveClientById($id);
 
         if (!$client) {
-            throw new ClientNotFoundException(sprintf('Client with ID "%s" not found.', $id));
+            throw new ClientNotFoundException($id);
         }
 
         return $client;
@@ -49,16 +51,20 @@ final readonly class ClientService
         $client = $this->clientRepository->findActiveClientById($id);
 
         if (!$client) {
-            throw new ClientNotFoundException(sprintf('Client with ID "%s" not found.', $id));
+            throw new ClientNotFoundException($id);
         }
 
-        $client
-            ->setFirstName($clientDto->firstName)
-            ->setLastName($clientDto->lastName)
-            ->setEmail($clientDto->email)
-            ->setPhone($clientDto->phoneNumber);
+        $checkEmail = $this->clientRepository->findActiveClientByEmail($clientDto->email);
+        if ($checkEmail && $checkEmail->getId() !== $id) {
+            throw new EmailExistException;
+        }
 
-        $this->clientRepository->save($client);
+        $checkPhone = $this->clientRepository->findActiveClientByPhoneNumber($clientDto->phoneNumber);
+        if ($checkPhone && $checkPhone->getId() !== $id) {
+            throw new PhoneExistException;
+        }
+
+        $client = $this->clientRepository->updateClient($client, $clientDto);
 
         return $client;
     }
@@ -68,7 +74,7 @@ final readonly class ClientService
         $client = $this->clientRepository->findActiveClientById($id);
 
         if (!$client) {
-            throw new ClientNotFoundException(sprintf('Client with ID "%s" not found.', $id));
+            throw new ClientNotFoundException($id);
         }
 
         $client->setDeletedAt(new \DateTimeImmutable());

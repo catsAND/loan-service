@@ -4,30 +4,39 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiErrorException extends \Exception
+readonly class ApiErrorException extends \Throwable
 {
+    public function __construct(
+        private string $type = '',
+        private string $title = '',
+        private int $status = 0,
+        private string $detail = '',
+        private array $extensions = [],
+    ) {
+    }
+
     public function getType(): string
     {
-        return 'https://api.example.com/errors/not-found'; // FIXME:
+        return $this->type;
     }
 
     public function getTitle(): string
     {
-        return 'Internal Server Error';
+        return $this->title;
     }
 
     public function getStatus(): int
     {
-        return Response::HTTP_INTERNAL_SERVER_ERROR;
+        return $this->status;
     }
 
     public function getDetail(): string
     {
-        return 'An unexpected error occurred.';
+        return $this->detail;
     }
 
     public function getExtensions(): array
     {
-        return [];
+        return $this->extensions;
     }
 }
