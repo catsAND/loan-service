@@ -14,7 +14,7 @@ final readonly class ClientService
 {
     public function __construct(
         private EventDispatcherInterface $dispatcher,
-        private readonly ClientRepository $clientRepository,
+        private ClientRepository $clientRepository,
     ) {
     }
 
