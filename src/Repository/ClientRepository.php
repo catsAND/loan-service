@@ -14,7 +14,7 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    public function findAllActiveClients(int $page, int $limit): array
+    public function findAllActiveClients(int $page = 1, int $limit = 50): array
     {
         return $this->createQueryBuilder('c')
             ->where('c.deletedAt IS NULL')
