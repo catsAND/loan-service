@@ -19,7 +19,7 @@ class Application
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?string $id = null;
 
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'applications')]
+    #[ORM\ManyToOne(targetEntity: Client::class)]
     #[ORM\JoinColumn(
         name: 'client_id',
         referencedColumnName: 'id',
