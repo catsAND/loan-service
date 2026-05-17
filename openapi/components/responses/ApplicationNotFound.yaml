@@ -1,0 +1,12 @@
+description: Not Found
+content:
+    application/problem+json:
+        schema:
+            $ref: "../schemas/Error.yaml"
+        example:
+            type: "http://localhost/api/v1/docs"
+            title: "Application Not Found"
+            status: 404
+            detail: 'Application with ID "550e8400-e29b-41d4-a716-446655440000" not found.'
+            instance: "/api/v1/applications/550e8400-e29b-41d4-a716-446655440000"
+            request_id: "550e8400-e29b-41d4-a716-446655440000"

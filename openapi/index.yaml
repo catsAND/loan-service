@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+    title: Loan Service API v1
+    description: REST API for loan applications and clients.
+    version: 1.0.0
+
+servers:
+    - url: .
+      description: Development server
+
+tags:
+    - name: Clients
+      description: Client endpoints
+    - name: Applications
+      description: Application endpoints
+    - name: Health
+      description: Health check endpoint
+
+paths:
+    /api/v1/clients:
+        $ref: "./paths/clients.yaml"
+
+    /api/v1/clients/{clientId}:
+        $ref: "./paths/clientsId.yaml"
+
+    /api/v1/applications:
+        $ref: "./paths/applications.yaml"
+
+    /api/v1/applications/{applicationId}:
+        $ref: "./paths/applicationsId.yaml"
+
+    /api/v1/health:
+        $ref: "./paths/health.yaml"
+
+components:
+    schemas:
+        Client:
+            $ref: "./components/schemas/Client.yaml"
+        ClientInput:
+            $ref: "./components/schemas/ClientInput.yaml"
+        Application:
+            $ref: "./components/schemas/Application.yaml"
+        ApplicationInput:
+            $ref: "./components/schemas/ApplicationInput.yaml"
+        ApplicationUpdate:
+            $ref: "./components/schemas/ApplicationUpdate.yaml"
+        Error:
+            $ref: "./components/schemas/Error.yaml"
+        ValidationError:
+            $ref: "./components/schemas/ValidationError.yaml"
+        Pagination:
+            $ref: "./components/schemas/Pagination.yaml"
+
+    responses:
+        ClientNotFound:
+            $ref: "./components/responses/ClientNotFound.yaml"
+        ApplicationNotFound:
+            $ref: "./components/responses/ApplicationNotFound.yaml"
+        Conflict:
+            $ref: "./components/responses/Conflict.yaml"
+        UnprocessableEntity:
+            $ref: "./components/responses/UnprocessableEntity.yaml"
+        InternalServerError:
+            $ref: "./components/responses/InternalServerError.yaml"

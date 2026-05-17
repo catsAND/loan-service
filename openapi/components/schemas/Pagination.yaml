@@ -1,0 +1,33 @@
+type: object
+required:
+  - data
+  - pagination
+properties:
+  data:
+    type: array
+    items: {}
+    description: List of items
+  pagination:
+    type: object
+    required:
+      - total
+      - page
+      - limit
+      - pages
+    properties:
+      total:
+        type: integer
+        description: Total number of items
+        example: 150
+      page:
+        type: integer
+        description: Current page number
+        example: 1
+      limit:
+        type: integer
+        description: Items per page
+        example: 100
+      pages:
+        type: integer
+        description: Total number of pages
+        example: 2

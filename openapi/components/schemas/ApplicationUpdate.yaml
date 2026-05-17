@@ -1,0 +1,24 @@
+type: object
+required:
+    - term
+    - amount
+    - currency
+properties:
+    term:
+        type: integer
+        minimum: 10
+        maximum: 30
+        description: Loan term in months
+        example: 30
+    amount:
+        type: number
+        minimum: 100.00
+        maximum: 3000.00
+        description: Loan amount
+        example: 3000.00
+    currency:
+        type: string
+        enum:
+            - EUR
+        description: Currency
+        example: "EUR"

@@ -1,0 +1,96 @@
+get:
+    operationId: getClient
+    summary: Get client by ID
+    description: Retrieve a specific client by ID
+    tags:
+        - Clients
+    parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+              type: string
+              format: uuid
+          description: Client ID
+    responses:
+        "200":
+            description: Client details
+            content:
+                application/json:
+                    schema:
+                        $ref: "../components/schemas/Client.yaml"
+            headers:
+                X-Request-Id:
+                    schema:
+                        type: string
+                        format: uuid
+        "404":
+            $ref: "../components/responses/ClientNotFound.yaml"
+        "500":
+            $ref: "../components/responses/InternalServerError.yaml"
+
+put:
+    operationId: updateClient
+    summary: Update client
+    description: Update a client
+    tags:
+        - Clients
+    parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+              type: string
+              format: uuid
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: "../components/schemas/ClientInput.yaml"
+    responses:
+        "200":
+            description: Client updated successfully
+            content:
+                application/json:
+                    schema:
+                        $ref: "../components/schemas/Client.yaml"
+            headers:
+                X-Request-Id:
+                    schema:
+                        type: string
+                        format: uuid
+        "404":
+            $ref: "../components/responses/ClientNotFound.yaml"
+        "409":
+            $ref: "../components/responses/Conflict.yaml"
+        "422":
+            $ref: "../components/responses/UnprocessableEntity.yaml"
+        "500":
+            $ref: "../components/responses/InternalServerError.yaml"
+
+delete:
+    operationId: deleteClient
+    summary: Delete client
+    description: Delete a client
+    tags:
+        - Clients
+    parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+              type: string
+              format: uuid
+    responses:
+        "204":
+            description: Client deleted successfully
+            headers:
+                X-Request-Id:
+                    schema:
+                        type: string
+                        format: uuid
+        "404":
+            $ref: "../components/responses/ClientNotFound.yaml"
+        "500":
+            $ref: "../components/responses/InternalServerError.yaml"

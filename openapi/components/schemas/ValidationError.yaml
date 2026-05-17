@@ -1,0 +1,23 @@
+allOf:
+    - $ref: "./Error.yaml"
+    - type: object
+      properties:
+          errors:
+              type: array
+              items:
+                  type: object
+                  required:
+                      - field
+                      - message
+                  properties:
+                      field:
+                          type: string
+                          description: Field name
+                          example: "email"
+                      message:
+                          type: string
+                          description: Validation error message
+                          example: "Email already exists."
+              example:
+                  - field: "email"
+                    message: "Email already exists."

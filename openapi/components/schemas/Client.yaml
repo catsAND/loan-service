@@ -1,0 +1,33 @@
+type: object
+required:
+    - id
+    - firstName
+    - lastName
+    - email
+    - phoneNumber
+properties:
+    id:
+        type: string
+        format: uuid
+        description: Client ID
+    firstName:
+        type: string
+        minLength: 2
+        maxLength: 32
+        description: Client first name
+        example: "John"
+    lastName:
+        type: string
+        minLength: 2
+        maxLength: 32
+        description: Client last name
+        example: "Doe"
+    email:
+        type: string
+        format: email
+        description: Client email
+        example: "john.doe@mail.com"
+    phoneNumber:
+        type: string
+        description: Client phone number
+        example: "+37101234567"

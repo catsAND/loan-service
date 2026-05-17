@@ -1,0 +1,98 @@
+get:
+    operationId: getApplication
+    summary: Get application by ID
+    description: Retrieve a specific application by Id
+    tags:
+        - Applications
+    parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+              type: string
+              format: uuid
+          description: Application ID
+    responses:
+        "200":
+            description: Application details
+            content:
+                application/json:
+                    schema:
+                        $ref: "../components/schemas/Application.yaml"
+            headers:
+                X-Request-Id:
+                    schema:
+                        type: string
+                        format: uuid
+        "404":
+            $ref: "../components/responses/ApplicationNotFound.yaml"
+        "500":
+            $ref: "../components/responses/InternalServerError.yaml"
+
+put:
+    operationId: updateApplication
+    summary: Update application
+    description: Update a application
+    tags:
+        - Applications
+    parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+              type: string
+              format: uuid
+    requestBody:
+        required: true
+        content:
+            application/json:
+                schema:
+                    $ref: "../components/schemas/ApplicationUpdate.yaml"
+                example:
+                    term: 30
+                    amount: "3000.00"
+                    currency: "EUR"
+    responses:
+        "200":
+            description: Application updated successfully
+            content:
+                application/json:
+                    schema:
+                        $ref: "../components/schemas/Application.yaml"
+            headers:
+                X-Request-Id:
+                    schema:
+                        type: string
+                        format: uuid
+        "404":
+            $ref: "../components/responses/ApplicationNotFound.yaml"
+        "422":
+            $ref: "../components/responses/UnprocessableEntity.yaml"
+        "500":
+            $ref: "../components/responses/InternalServerError.yaml"
+
+delete:
+    operationId: deleteApplication
+    summary: Delete application
+    description: Delete a application
+    tags:
+        - Applications
+    parameters:
+        - name: applicationId
+          in: path
+          required: true
+          schema:
+              type: string
+              format: uuid
+    responses:
+        "204":
+            description: Application deleted successfully
+            headers:
+                X-Request-Id:
+                    schema:
+                        type: string
+                        format: uuid
+        "404":
+            $ref: "../components/responses/ApplicationNotFound.yaml"
+        "500":
+            $ref: "../components/responses/InternalServerError.yaml"

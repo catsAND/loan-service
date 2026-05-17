@@ -1,0 +1,26 @@
+type: object
+description: Standard error response following RFC 9457 Problem Details specification.
+required:
+    - type
+    - title
+    - status
+properties:
+    type:
+        type: string
+        description: Error type URI
+    title:
+        type: string
+        description: Error title
+    status:
+        type: integer
+        description: HTTP status code
+    detail:
+        type: string
+        description: Error message
+    instance:
+        type: string
+        description: Request URI
+    request_id:
+        type: string
+        format: uuid
+        description: Unique request ID
