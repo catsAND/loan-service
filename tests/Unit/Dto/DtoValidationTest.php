@@ -90,6 +90,23 @@ final class DtoValidationTest extends TestCase
         ]);
     }
 
+    public function testClientDtoRejectsNonLatinCharacters(): void
+    {
+        $dto = new ClientDto(
+            firstName: 'Джон',
+            lastName: 'Доу',
+            email: 'john.doe@mail.com',
+            phoneNumber: '+37101234567',
+        );
+
+        $violations = $this->validator->validate($dto);
+
+        $this->assertViolationPropertyPaths($violations, [
+            'firstName',
+            'lastName',
+        ]);
+    }
+
     public function testApplicationDtoWithValidData(): void
     {
         $dto = new ApplicationDto(

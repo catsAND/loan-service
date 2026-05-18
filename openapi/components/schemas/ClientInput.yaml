@@ -9,13 +9,13 @@ properties:
         type: string
         minLength: 2
         maxLength: 32
-        description: Client first name
+        description: Client first name. Latin letters only.
         example: "John"
     lastName:
         type: string
         minLength: 2
         maxLength: 32
-        description: Client last name
+        description: Client last name. Latin letters only.
         example: "Doe"
     email:
         type: string
