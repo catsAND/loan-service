@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "openapi:validate": "swagger-cli validate openapi/index.yaml",
+    "openapi:yaml": "swagger-cli bundle openapi/index.yaml --type yaml --outfile public/openapi.yaml",
+    "openapi:json": "swagger-cli bundle openapi/index.yaml --type json --outfile public/openapi.json",
+    "openapi:build": "npm run openapi:validate && npm run openapi:yaml && npm run openapi:json"
+  },
+  "dependencies": {
+    "swagger-cli": "^4.0.4"
+  }
+}
