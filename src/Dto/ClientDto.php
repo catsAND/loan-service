@@ -2,8 +2,8 @@
 
 namespace App\Dto;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\PhoneNumber;
+use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class ClientDto
 {

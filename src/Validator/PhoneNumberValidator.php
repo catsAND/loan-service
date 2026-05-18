@@ -16,7 +16,7 @@ final class PhoneNumberValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, PhoneNumber::class);
         }
 
-        if ($value === null || $value === '') {
+        if (null === $value || '' === $value) {
             return;
         }
 

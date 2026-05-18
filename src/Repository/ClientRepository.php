@@ -2,11 +2,13 @@
 
 namespace App\Repository;
 
-use App\Dto\ClientDto;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Client>
+ */
 class ClientRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -14,6 +16,9 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
+    /**
+     * @return list<Client>
+     */
     public function findAllActiveClients(int $page = 1, int $limit = 100): array
     {
         return $this->createQueryBuilder('c')
@@ -23,6 +28,15 @@ class ClientRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    public function countActiveClients(): int
+    {
+        return (int) $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.deletedAt IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function findActiveClientById(string $id): ?Client
@@ -44,7 +58,7 @@ class ClientRepository extends ServiceEntityRepository
     public function findActiveClientByEmailOrPhone(string $email, string $phone): ?Client
     {
         return $this->createQueryBuilder('c')
-            ->where('c.email = :email OR c.phone = :phone')
+            ->where('(c.email = :email OR c.phone = :phone)')
             ->andWhere('c.deletedAt IS NULL')
             ->setParameter('email', $email)
             ->setParameter('phone', $phone)
@@ -62,7 +76,7 @@ class ClientRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findActiveClientByPhone(string $phone): ?Client
+    public function findActiveClientByPhoneNumber(string $phone): ?Client
     {
         return $this->createQueryBuilder('c')
             ->where('c.phone = :phone')
@@ -70,32 +84,5 @@ class ClientRepository extends ServiceEntityRepository
             ->setParameter('phone', $phone)
             ->getQuery()
             ->getOneOrNullResult();
-    }
-
-    public function createClient(ClientDto $clientDto): Client
-    {
-        $client = new Client();
-        $client
-            ->setFirstName($clientDto->firstName)
-            ->setLastName($clientDto->lastName)
-            ->setEmail($clientDto->email)
-            ->setPhone($clientDto->phoneNumber);
-
-        $this->save($client);
-
-        return $client;
-    }
-
-    public function updateClient(Client $client, ClientDto $clientDto): Client
-    {
-        $client
-            ->setFirstName($clientDto->firstName)
-            ->setLastName($clientDto->lastName)
-            ->setEmail($clientDto->email)
-            ->setPhone($clientDto->phoneNumber);
-
-        $this->save($client);
-
-        return $client;
     }
 }

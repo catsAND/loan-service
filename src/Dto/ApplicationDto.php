@@ -2,6 +2,7 @@
 
 namespace App\Dto;
 
+use App\Enum\CurrencyEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class ApplicationDto
@@ -15,10 +16,9 @@ final readonly class ApplicationDto
         public int $term,
         #[Assert\NotBlank]
         #[Assert\Range(min: 100.00, max: 5000.00)]
-        public float $amount,
+        public string $amount,
         #[Assert\NotBlank]
-        #[Assert\Choice(choices: ['EUR'])]
-        public string $currency,
+        public CurrencyEnum $currency,
     ) {
     }
 }

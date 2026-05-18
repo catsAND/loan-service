@@ -2,21 +2,23 @@
 
 namespace App\Entity;
 
+use App\Enum\CurrencyEnum;
 use App\Repository\ApplicationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 #[ORM\Table(name: 'applications')]
+#[ORM\Index(name: 'idx_applications_active_created_at', columns: ['created_at'], options: ['where' => '(deleted_at IS NULL)'])]
+#[ORM\Index(name: 'idx_applications_client_id', columns: ['client_id'])]
 #[ORM\HasLifecycleCallbacks]
 class Application
 {
-    public const string CURRENCY_EUR = 'EUR';
-
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    /** @phpstan-ignore property.unusedType */
     private ?string $id = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class)]
@@ -34,16 +36,16 @@ class Application
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private string $amount;
 
-    #[ORM\Column(length: 3)]
-    private string $currency = self::CURRENCY_EUR;
+    #[ORM\Column(length: 3, enumType: CurrencyEnum::class)]
+    private CurrencyEnum $currency = CurrencyEnum::EUR;
 
-    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIMETZ_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIMETZ_IMMUTABLE)]
     private \DateTimeImmutable $updatedAt;
 
-    #[ORM\Column(name: 'deleted_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(name: 'deleted_at', type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\PrePersist]
@@ -102,12 +104,12 @@ class Application
         return $this;
     }
 
-    public function getCurrency(): string
+    public function getCurrency(): CurrencyEnum
     {
         return $this->currency;
     }
 
-    public function setCurrency(string $currency): self
+    public function setCurrency(CurrencyEnum $currency): self
     {
         $this->currency = $currency;
 

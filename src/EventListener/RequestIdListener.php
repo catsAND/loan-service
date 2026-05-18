@@ -19,7 +19,7 @@ final class RequestIdListener
 
         $requestId = $request->headers->get(self::HEADER_KEY);
 
-        if (!is_string($requestId) || $requestId === '') {
+        if (!is_string($requestId) || '' === $requestId) {
             $requestId = Uuid::v4()->toRfc4122();
         }
 

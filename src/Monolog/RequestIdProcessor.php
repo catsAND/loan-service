@@ -16,13 +16,13 @@ final readonly class RequestIdProcessor
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        if ($request === null) {
+        if (null === $request) {
             return $record;
         }
 
         $requestId = $request->attributes->get('_request_id');
 
-        if (!is_string($requestId) || $requestId === '') {
+        if (!is_string($requestId) || '' === $requestId) {
             return $record;
         }
 

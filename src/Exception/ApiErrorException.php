@@ -2,17 +2,20 @@
 
 namespace App\Exception;
 
-use Throwable;
-
 class ApiErrorException extends \RuntimeException
 {
+    public const string DEFAULT_TYPE = '/api/v1/docs';
+
+    /**
+     * @param array<string, mixed> $extensions
+     */
     public function __construct(
         private readonly string $type = '',
         private readonly string $title = '',
         private readonly int $status = 0,
         private readonly string $detail = '',
         private readonly array $extensions = [],
-        ?Throwable $previous = null,
+        ?\Throwable $previous = null,
     ) {
         parent::__construct($detail, $status, $previous);
     }
@@ -37,6 +40,9 @@ class ApiErrorException extends \RuntimeException
         return $this->detail;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getExtensions(): array
     {
         return $this->extensions;

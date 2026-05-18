@@ -4,7 +4,6 @@ namespace App\Controller\Api\V1;
 
 use App\Dto\ApplicationDto;
 use App\Dto\UpdateApplicationDto;
-use App\Repository\ApplicationRepository;
 use App\Service\ApplicationService;
 use App\Transformer\ApplicationTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +16,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class ApplicationController extends AbstractController
 {
     public function __construct(
-        private readonly ApplicationRepository $applicationRepository,
         private readonly ApplicationTransformer $applicationTransformer,
         private readonly ApplicationService $applicationService,
     ) {
@@ -26,12 +24,15 @@ class ApplicationController extends AbstractController
     #[Route('', name: 'api_application_list', methods: ['GET'])]
     public function list(Request $request): JsonResponse
     {
-        $page = max(1, (int)$request->query->get('page', 1));
-        $limit = max(1, (int)$request->query->get('limit', 100));
+        $page = max(1, (int) $request->query->get('page', 1));
+        $limit = min(100, max(1, (int) $request->query->get('limit', 100)));
 
-        $data = $this->applicationRepository->findAllActiveApplications($page, $limit);
+        $result = $this->applicationService->listApplications($page, $limit);
 
-        return new JsonResponse($this->applicationTransformer->transformCollection($data));
+        return new JsonResponse([
+            'data' => $this->applicationTransformer->transformCollection($result['data']),
+            'pagination' => $result['pagination'],
+        ]);
     }
 
     #[Route('/{applicationId}', name: 'api_application_get', methods: ['GET'])]
@@ -63,6 +64,6 @@ class ApplicationController extends AbstractController
     {
         $this->applicationService->deleteApplicationById($applicationId);
 
-        return new JsonResponse();
+        return new JsonResponse('', JsonResponse::HTTP_NO_CONTENT);
     }
 }

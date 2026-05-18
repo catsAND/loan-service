@@ -6,6 +6,15 @@ use App\Entity\Application;
 
 final class ApplicationTransformer
 {
+    /**
+     * @return array{
+     *     id: string|null,
+     *     clientId: string|null,
+     *     term: int,
+     *     amount: string,
+     *     currency: \App\Enum\CurrencyEnum
+     * }
+     */
     public function transform(Application $application): array
     {
         return [
@@ -17,6 +26,17 @@ final class ApplicationTransformer
         ];
     }
 
+    /**
+     * @param list<Application> $applications
+     *
+     * @return list<array{
+     *     id: string|null,
+     *     clientId: string|null,
+     *     term: int,
+     *     amount: string,
+     *     currency: \App\Enum\CurrencyEnum
+     * }>
+     */
     public function transformCollection(array $applications): array
     {
         return array_map([$this, 'transform'], $applications);

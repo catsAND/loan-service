@@ -3,7 +3,6 @@
 namespace App\Controller\Api\V1;
 
 use App\Dto\ClientDto;
-use App\Repository\ClientRepository;
 use App\Service\ClientService;
 use App\Transformer\ClientTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,7 +15,6 @@ use Symfony\Component\Routing\Attribute\Route;
 class ClientController extends AbstractController
 {
     public function __construct(
-        private readonly ClientRepository $clientRepository,
         private readonly ClientTransformer $clientTransformer,
         private readonly ClientService $clientService,
     ) {
@@ -25,12 +23,15 @@ class ClientController extends AbstractController
     #[Route('', name: 'api_client_list', methods: ['GET'])]
     public function list(Request $request): JsonResponse
     {
-        $page = max(1, (int)$request->query->get('page', 1));
-        $limit = max(1, (int)$request->query->get('limit', 100));
+        $page = max(1, (int) $request->query->get('page', 1));
+        $limit = min(100, max(1, (int) $request->query->get('limit', 100)));
 
-        $data = $this->clientRepository->findAllActiveClients($page, $limit);
+        $result = $this->clientService->listClients($page, $limit);
 
-        return new JsonResponse($this->clientTransformer->transformCollection($data));
+        return new JsonResponse([
+            'data' => $this->clientTransformer->transformCollection($result['data']),
+            'pagination' => $result['pagination'],
+        ]);
     }
 
     #[Route('/{clientId}', name: 'api_client_get', methods: ['GET'])]
@@ -62,6 +63,6 @@ class ClientController extends AbstractController
     {
         $this->clientService->deleteClientById($clientId);
 
-        return new JsonResponse();
+        return new JsonResponse('', JsonResponse::HTTP_NO_CONTENT);
     }
 }

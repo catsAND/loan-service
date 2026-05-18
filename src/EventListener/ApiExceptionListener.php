@@ -3,6 +3,7 @@
 namespace App\EventListener;
 
 use App\Exception\ExceptionMapper;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -13,14 +14,17 @@ final class ApiExceptionListener
 {
     public function __construct(
         private readonly ExceptionMapper $exceptionMapper,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
     public function __invoke(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
-        $request   = $event->getRequest();
+        $request = $event->getRequest();
         $requestId = $request->attributes->get(RequestIdListener::ATTRIBUTE_KEY);
+
+        $this->logger->error('API exception occurred', ['exception' => $exception]);
 
         $error = $this->exceptionMapper->map($exception);
 

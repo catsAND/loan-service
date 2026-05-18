@@ -2,13 +2,13 @@
 
 namespace App\Repository;
 
-use App\Dto\ApplicationDto;
-use App\Dto\UpdateApplicationDto;
 use App\Entity\Application;
-use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends ServiceEntityRepository<Application>
+ */
 class ApplicationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -16,6 +16,9 @@ class ApplicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Application::class);
     }
 
+    /**
+     * @return list<Application>
+     */
     public function findAllActiveApplications(int $page = 1, int $limit = 100): array
     {
         return $this->createQueryBuilder('a')
@@ -25,6 +28,15 @@ class ApplicationRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
+    }
+
+    public function countActiveApplications(): int
+    {
+        return (int) $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->where('a.deletedAt IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     public function findActiveApplicationById(string $id): ?Application
@@ -41,30 +53,5 @@ class ApplicationRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($application);
         $this->getEntityManager()->flush();
-    }
-
-    public function createApplication(ApplicationDto $applicationDto, Client $client): Application
-    {
-        $application = new Application()
-            ->setClient($client)
-            ->setTerm($applicationDto->term)
-            ->setAmount((string)$applicationDto->amount)
-            ->setCurrency($applicationDto->currency);
-
-        $this->save($application);
-
-        return $application;
-    }
-
-    public function updateApplication(Application $application, UpdateApplicationDto $applicationDto): Application
-    {
-        $application
-            ->setTerm($applicationDto->term)
-            ->setAmount((string)$applicationDto->amount)
-            ->setCurrency($applicationDto->currency);
-
-        $this->save($application);
-
-        return $application;
     }
 }

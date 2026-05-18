@@ -6,10 +6,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ClientNotFoundException extends ApiErrorException
 {
-    public function __construct(readonly string $id)
+    public function __construct(string $id)
     {
         parent::__construct(
-            type: 'https://api.example.com/errors/client-not-found', // FIXME:
+            type: self::DEFAULT_TYPE,
             title: 'Client Not Found',
             status: Response::HTTP_NOT_FOUND,
             detail: sprintf('Client with ID "%s" not found.', $id),

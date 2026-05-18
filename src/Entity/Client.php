@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: 'clients')]
+#[ORM\Index(name: 'idx_clients_active_created_at', columns: ['created_at'], options: ['where' => '(deleted_at IS NULL)'])]
+#[ORM\UniqueConstraint(name: 'idx_clients_active_email', columns: ['email'], options: ['where' => '(deleted_at IS NULL)'])]
+#[ORM\UniqueConstraint(name: 'idx_clients_active_phone', columns: ['phone'], options: ['where' => '(deleted_at IS NULL)'])]
 #[ORM\HasLifecycleCallbacks]
 class Client
 {
@@ -15,6 +18,7 @@ class Client
     #[ORM\Column(type: 'uuid')]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    /** @phpstan-ignore property.unusedType */
     private ?string $id = null;
 
     #[ORM\Column(name: 'first_name', length: 32)]
@@ -23,19 +27,19 @@ class Client
     #[ORM\Column(name: 'last_name', length: 32)]
     private string $lastName;
 
-    #[ORM\Column(type: Types::TEXT, unique: true)]
+    #[ORM\Column(type: Types::TEXT)]
     private string $email;
 
-    #[ORM\Column(length: 16, unique: true)]
+    #[ORM\Column(length: 16)]
     private string $phone;
 
-    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'created_at', type: Types::DATETIMETZ_IMMUTABLE)]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIMETZ_IMMUTABLE)]
     private \DateTimeImmutable $updatedAt;
 
-    #[ORM\Column(name: 'deleted_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(name: 'deleted_at', type: Types::DATETIMETZ_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $deletedAt = null;
 
     #[ORM\PrePersist]

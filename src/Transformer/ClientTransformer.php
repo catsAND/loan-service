@@ -6,6 +6,15 @@ use App\Entity\Client;
 
 final class ClientTransformer
 {
+    /**
+     * @return array{
+     *     id: string|null,
+     *     firstName: string,
+     *     lastName: string,
+     *     email: string,
+     *     phoneNumber: string
+     * }
+     */
     public function transform(Client $client): array
     {
         return [
@@ -17,6 +26,17 @@ final class ClientTransformer
         ];
     }
 
+    /**
+     * @param list<Client> $clients
+     *
+     * @return list<array{
+     *     id: string|null,
+     *     firstName: string,
+     *     lastName: string,
+     *     email: string,
+     *     phoneNumber: string
+     * }>
+     */
     public function transformCollection(array $clients): array
     {
         return array_map([$this, 'transform'], $clients);

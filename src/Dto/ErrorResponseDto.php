@@ -6,6 +6,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class ErrorResponseDto
 {
+    /**
+     * @param array<string, mixed> $extensions
+     */
     public function __construct(
         public int $status,
         public string $type,
@@ -15,20 +18,13 @@ final readonly class ErrorResponseDto
     ) {
     }
 
-    public static function internalError($exception): self // FIXME: remove argument
+    public static function internalError(): self
     {
         return new self(
             status: Response::HTTP_INTERNAL_SERVER_ERROR,
             type: 'about:blank',
             title: 'Internal Server Error',
             detail: 'An unexpected error occurred.',
-            extensions: [
-                'exception' => [
-                    'class' => $exception::class,
-                    'message' => $exception->getMessage(),
-                    'stack_trace' => $exception->getTrace(),
-                ],
-            ],
         );
     }
 }

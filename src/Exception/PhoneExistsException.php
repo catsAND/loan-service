@@ -4,12 +4,12 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final class PhoneExistException extends ApiErrorException
+final class PhoneExistsException extends ApiErrorException
 {
     public function __construct()
     {
         parent::__construct(
-            type: 'https://api.example.com/errors/phone-exist', // FIXME:
+            type: self::DEFAULT_TYPE,
             title: 'Phone number already exists',
             status: Response::HTTP_CONFLICT,
             detail: 'A client with the provided phone number already exists.',

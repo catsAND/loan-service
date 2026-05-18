@@ -4,12 +4,12 @@ namespace App\Exception;
 
 use Symfony\Component\HttpFoundation\Response;
 
-final class EmailExistException extends ApiErrorException
+final class EmailExistsException extends ApiErrorException
 {
     public function __construct()
     {
         parent::__construct(
-            type: 'https://api.example.com/errors/email-exist', // FIXME:
+            type: self::DEFAULT_TYPE,
             title: 'Client conflict',
             status: Response::HTTP_CONFLICT,
             detail: 'A client with the provided email already exists.',

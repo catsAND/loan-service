@@ -3,20 +3,20 @@
 namespace App\EventListener;
 
 use App\Event\ClientCreatedEvent;
-use App\Repository\ClientRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(event: ClientCreatedEvent::class)]
 final class ClientCreatedEventListener
 {
-    public function __construct(private readonly ClientRepository $clientRepository)
+    public function __construct(private readonly LoggerInterface $logger)
     {
     }
 
-    public function __invoke(ClientCreatedEvent $event): void
+    public function onAppEventClientCreatedEvent(ClientCreatedEvent $event): void
     {
         $client = $event->getClient();
 
-        // Perform any additional actions like sending notification.
+        $this->logger->info('Client created event triggered', ['event' => $event, 'clientId' => $client->getId()]);
     }
 }
