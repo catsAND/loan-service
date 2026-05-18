@@ -11,9 +11,9 @@ properties:
         description: Loan term in months
         example: 30
     amount:
-        type: number
+        type: string
         minimum: 100.00
-        maximum: 3000.00
+        maximum: 5000.00
         description: Loan amount
         example: 3000.00
     currency:
