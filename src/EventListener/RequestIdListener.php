@@ -10,8 +10,8 @@ use Symfony\Component\Uid\Uuid;
 #[AsEventListener(event: KernelEvents::REQUEST, priority: 100)]
 final class RequestIdListener
 {
-    public const ATTRIBUTE_KEY = '_request_id';
-    public const HEADER_KEY = 'X-Request-Id';
+    public const string ATTRIBUTE_KEY = '_request_id';
+    public const string HEADER_KEY = 'X-Request-Id';
 
     public function __invoke(RequestEvent $event): void
     {
